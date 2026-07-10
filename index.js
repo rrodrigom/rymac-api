@@ -13,20 +13,35 @@ app.post("/leer-factura", async (req, res) => {
     const prompt = `Sos un asistente que analiza documentos financieros de Argentina.
 Analizá este documento y determiná si es una FACTURA de servicio o un COMPROBANTE DE PAGO.
 
+Un COMPROBANTE DE PAGO tiene características como:
+- Logo o nombre de Mercado Pago, banco, homebanking
+- Título "Comprobante de pago" o "Recibo de pago"
+- Número de operación o número de transacción
+- Campo "Persona que pagó" o "Pagador"
+- Confirmación de que el pago fue realizado
+
+Una FACTURA tiene características como:
+- Logo de la empresa de servicios (EDENOR, NATURGY, AYSA, etc.)
+- Período de facturación
+- Fecha de vencimiento para pagar
+- Monto a pagar (no monto pagado)
+
 Respondé SOLO con un objeto JSON con estas claves exactas (sin markdown, sin texto extra):
 {
   "tipo": "factura" o "comprobante",
   "servicio": "nombre del servicio (ej: EDENOR, NATURGY, AYSA, INTERNET)",
-  "monto": número con punto decimal sin separador de miles (ej: 42349.54),
+  "monto": número con punto decimal sin separador de miles (ej: 99985.05),
   "fecha": "fecha de emisión o período en formato YYYY-MM-DD o null",
-  "vencimiento": "fecha de vencimiento en formato YYYY-MM-DD o null",
+  "vencimiento": "fecha de vencimiento de la FACTURA en formato YYYY-MM-DD o null (para comprobantes es null)",
   "fecha_pago": "fecha en que se realizó el pago en formato YYYY-MM-DD o null (solo para comprobantes)",
-  "referencia": "número de factura, transacción o referencia o null"
+  "referencia": "número de operación, transacción o factura o null",
+  "pagador": "nombre de la persona que pagó o null (solo para comprobantes)"
 }
 
-Si es FACTURA: fecha es la fecha de emisión, vencimiento es cuando vence, fecha_pago es null.
-Si es COMPROBANTE DE PAGO: fecha_pago es cuando se pagó, vencimiento puede ser null.
-IMPORTANTE: monto debe ser número JavaScript válido, sin puntos de miles, con punto como decimal.`;
+IMPORTANTE: 
+- Si es comprobante, fecha_pago es la fecha del pago (NO el vencimiento), y vencimiento es null
+- monto debe ser número JavaScript válido, sin puntos de miles, con punto como decimal
+- Para Mercado Pago: el campo "Vencimiento" que aparece es la fecha del pago, NO un vencimiento de factura`;
 
     const content = mediaType === "application/pdf"
       ? [{ type: "document", source: { type: "base64", media_type: "application/pdf", data: imageData } }, { type: "text", text: prompt }]
