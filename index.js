@@ -39,9 +39,10 @@ Respondé SOLO con un objeto JSON con estas claves exactas (sin markdown, sin te
 }
 
 IMPORTANTE SOBRE "fecha" (solo para facturas):
-- Buscá un campo impreso explícito como "Fecha de Factura", "Fecha de emisión" o similar, y usá ESE valor tal cual figura.
-- NUNCA inventes ni calcules una fecha a partir del período de facturación, del vencimiento, ni de ningún otro dato. Si no encontrás una fecha de emisión impresa de forma explícita, devolvé null.
-- No confundas "fecha" con las fechas del "Período de facturación desde/hasta", ni con la fecha de vencimiento.
+- Si el documento muestra un "Período de facturación" con fechas "desde" y "hasta" (o similar), usá la fecha de INICIO de ese período como "fecha" — eso representa mejor a qué mes corresponde el consumo facturado.
+- Si el documento NO muestra un período de facturación explícito, usá la fecha de EMISIÓN de la factura (buscá un campo impreso como "Fecha de Factura", "Fecha de emisión" o similar).
+- NUNCA inventes ni calcules una fecha que no esté impresa literalmente en el documento. Si no encontrás ninguna de las dos, devolvé null.
+- No confundas "fecha" con la fecha de vencimiento.
 
 IMPORTANTE: 
 - Si es comprobante, fecha_pago es la fecha del pago (NO el vencimiento), y vencimiento es null
