@@ -31,12 +31,17 @@ Respondé SOLO con un objeto JSON con estas claves exactas (sin markdown, sin te
   "tipo": "factura" o "comprobante",
   "servicio": "nombre del servicio (ej: EDENOR, NATURGY, AYSA, INTERNET)",
   "monto": número con punto decimal sin separador de miles (ej: 99985.05),
-  "fecha": "fecha de emisión o período en formato YYYY-MM-DD o null",
+  "fecha": "fecha de EMISIÓN de la factura, en formato YYYY-MM-DD o null",
   "vencimiento": "fecha de vencimiento de la FACTURA en formato YYYY-MM-DD o null (para comprobantes es null)",
   "fecha_pago": "fecha en que se realizó el pago en formato YYYY-MM-DD o null (solo para comprobantes)",
   "referencia": "número de operación, transacción o factura o null",
   "pagador": "nombre de la persona que pagó o null (solo para comprobantes)"
 }
+
+IMPORTANTE SOBRE "fecha" (solo para facturas):
+- Buscá un campo impreso explícito como "Fecha de Factura", "Fecha de emisión" o similar, y usá ESE valor tal cual figura.
+- NUNCA inventes ni calcules una fecha a partir del período de facturación, del vencimiento, ni de ningún otro dato. Si no encontrás una fecha de emisión impresa de forma explícita, devolvé null.
+- No confundas "fecha" con las fechas del "Período de facturación desde/hasta", ni con la fecha de vencimiento.
 
 IMPORTANTE: 
 - Si es comprobante, fecha_pago es la fecha del pago (NO el vencimiento), y vencimiento es null
